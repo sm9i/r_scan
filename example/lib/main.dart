@@ -54,9 +54,7 @@ class _MyPageState extends State<MyPage> {
             child: FlatButton(
               onPressed: () async {
                 final result = await Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            RScanCameraDialog()));
+                    MaterialPageRoute(builder: (BuildContext context) => RScanCameraDialog()));
                 setState(() {
                   this.result = result;
                 });
@@ -67,9 +65,8 @@ class _MyPageState extends State<MyPage> {
           Center(
             child: FlatButton(
               onPressed: () async {
-                final result = await Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => RScanDialog()));
+                final result = await Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) => RScanDialog()));
                 setState(() {
                   this.result = result;
                 });
@@ -81,8 +78,7 @@ class _MyPageState extends State<MyPage> {
             child: FlatButton(
               onPressed: () async {
                 if (await canReadStorage()) {
-                  var image =
-                      await ImagePicker.pickImage(source: ImageSource.gallery);
+                  var image = await ImagePicker.pickImage(source: ImageSource.gallery);
                   if (image != null) {
                     final result = await RScan.scanImagePath(image.path);
                     setState(() {
@@ -110,8 +106,7 @@ class _MyPageState extends State<MyPage> {
             child: FlatButton(
               onPressed: () async {
                 ByteData data = await rootBundle.load('images/qrCode.png');
-                final result =
-                    await RScan.scanImageMemory(data.buffer.asUint8List());
+                final result = await RScan.scanImageMemory(data.buffer.asUint8List());
                 setState(() {
                   this.result = result;
                 });
@@ -126,11 +121,9 @@ class _MyPageState extends State<MyPage> {
 
   Future<bool> canReadStorage() async {
     if (Platform.isIOS) return true;
-    var status = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
+    var status = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
     if (status != PermissionStatus.granted) {
-      var future = await PermissionHandler()
-          .requestPermissions([PermissionGroup.storage]);
+      var future = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
       for (final item in future.entries) {
         if (item.value != PermissionStatus.granted) {
           return false;

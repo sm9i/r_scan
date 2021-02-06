@@ -71,11 +71,9 @@ class _RScanDialogState extends State<RScanDialog> {
   }
 
   Future<bool> canOpenCameraView() async {
-    var status =
-        await PermissionHandler().checkPermissionStatus(PermissionGroup.camera);
+    var status = await PermissionHandler().checkPermissionStatus(PermissionGroup.camera);
     if (status != PermissionStatus.granted) {
-      var future = await PermissionHandler()
-          .requestPermissions([PermissionGroup.camera]);
+      var future = await PermissionHandler().requestPermissions([PermissionGroup.camera]);
       for (final item in future.entries) {
         if (item.value != PermissionStatus.granted) {
           return false;
@@ -90,8 +88,7 @@ class _RScanDialogState extends State<RScanDialog> {
   Widget _buildFlashBtn(BuildContext context, AsyncSnapshot<bool> snapshot) {
     return snapshot.hasData
         ? Padding(
-            padding: EdgeInsets.only(
-                bottom: 24 + MediaQuery.of(context).padding.bottom),
+            padding: EdgeInsets.only(bottom: 24 + MediaQuery.of(context).padding.bottom),
             child: IconButton(
                 icon: Icon(snapshot.data ? Icons.flash_on : Icons.flash_off),
                 color: Colors.white,
@@ -118,15 +115,13 @@ class ScanImageView extends StatefulWidget {
   _ScanImageViewState createState() => _ScanImageViewState();
 }
 
-class _ScanImageViewState extends State<ScanImageView>
-    with TickerProviderStateMixin {
+class _ScanImageViewState extends State<ScanImageView> with TickerProviderStateMixin {
   AnimationController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
+    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
     controller.repeat(reverse: true);
   }
 
@@ -139,13 +134,13 @@ class _ScanImageViewState extends State<ScanImageView>
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-        animation: controller,
-        builder: (BuildContext context, Widget child) => CustomPaint(
-              foregroundPainter:
-                  _ScanPainter(controller.value, Colors.white, Colors.green),
-              child: widget.child,
-              willChange: true,
-            ));
+      animation: controller,
+      builder: (BuildContext context, Widget child) => CustomPaint(
+        foregroundPainter: _ScanPainter(controller.value, Colors.white, Colors.green),
+        child: widget.child,
+        willChange: true,
+      ),
+    );
   }
 }
 
@@ -202,8 +197,8 @@ class _ScanPainter extends CustomPainter {
 
     _paint.color = scanColor;
 
-    final scanRect = Rect.fromLTWH(
-        left + 10, top + 10 + (value * (boxHeight - 20)), boxWidth - 20, 3);
+    final scanRect =
+        Rect.fromLTWH(left + 10, top + 10 + (value * (boxHeight - 20)), boxWidth - 20, 3);
 
     _paint.shader = LinearGradient(colors: <Color>[
       Colors.white54,
