@@ -1,4 +1,7 @@
 # r_scan
+
+# [fork地址](https://github.com/CaiJingLong/r_scan/tree/use_gitee)
+
 [![pub package](https://img.shields.io/pub/v/r_scan.svg)](https://pub.dartlang.org/packages/r_scan)
 
 ![](screen/r_scan.png)
