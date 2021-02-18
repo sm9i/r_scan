@@ -240,6 +240,28 @@ public class ImageScanHelper extends ContextWrapper {
         });
     }
 
+    public void scanImageLocalFile(MethodCall call, final MethodChannel.Result result) {
+        final String path = call.argument("path");
+        if (path == null) {
+            result.error("1001", "please enter your file path", null);
+        }
+        final File file = new File(path);
+        if (file.isFile()) {
+            executor.execute(() -> handler.post(() -> {
+                try {
+                    final String data = QRCodeParseUtils.syncDecodeQRCode(path);
+                    Log.e("ImageScanHelper", data);
+                    result.success(data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }));
+
+        } else {
+            result.success("");
+        }
+    }
+
     public void scanImageMemory(MethodCall call, final MethodChannel.Result result) {
         final byte[] uint8list = call.argument("uint8list");
         if (uint8list == null) {

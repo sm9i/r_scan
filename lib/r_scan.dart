@@ -4,6 +4,7 @@
 
 export 'src/r_scan_camera.dart';
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 export 'package:r_scan/src/r_scan_view.dart';
@@ -11,8 +12,7 @@ export 'package:r_scan/src/r_scan_camera.dart';
 
 /// qr scan
 class RScan {
-  static const MethodChannel _channel =
-      const MethodChannel('com.rhyme_lph/r_scan');
+  static const MethodChannel _channel = const MethodChannel('com.rhyme_lph/r_scan');
 
   /// scan qr image in path
   ///
@@ -43,6 +43,15 @@ class RScan {
       RScanResult.formMap(await _channel.invokeMethod('scanImageMemory', {
         "uint8list": uint8list,
       }));
+
+  ///android 使用新方法  ios 使用旧的
+  static Future<String> scanImageLocalFile(String path) async {
+    if (Platform.isAndroid) {
+      return _channel.invokeMethod<String>('scanImageLocalFile', {'path': path});
+    } else {
+      return (await scanImagePath(path)).message;
+    }
+  }
 }
 
 /// barcode type
@@ -84,10 +93,7 @@ class RScanPoint {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RScanPoint &&
-          runtimeType == other.runtimeType &&
-          x == other.x &&
-          y == other.y;
+      other is RScanPoint && runtimeType == other.runtimeType && x == other.x && y == other.y;
 
   @override
   int get hashCode => x.hashCode ^ y.hashCode;
@@ -110,9 +116,7 @@ class RScanResult {
     return map == null
         ? null
         : RScanResult(
-            type: map['type'] != null
-                ? RScanBarType.values[map['type'] as int]
-                : null,
+            type: map['type'] != null ? RScanBarType.values[map['type'] as int] : null,
             message: map['message'] as String,
             points: map['points'] != null
                 ? (map['points'] as List)

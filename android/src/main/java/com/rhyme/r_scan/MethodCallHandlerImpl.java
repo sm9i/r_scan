@@ -68,6 +68,8 @@ public class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
             scanHelper.scanImageUrl(call, result);
         } else if (call.method.equals("scanImageMemory")) {
             scanHelper.scanImageMemory(call, result);
+        } else if (call.method.equals("scanImageLocalFile")) {
+            scanHelper.scanImageLocalFile(call, result);
         } else {
             result.notImplemented();
         }
